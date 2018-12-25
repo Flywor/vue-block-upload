@@ -1,4 +1,4 @@
-# vue-upload
+# vue-block-upload
 基于vue的上传组件
 
 ## Install
