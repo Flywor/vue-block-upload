@@ -1,6 +1,24 @@
 # vue-upload
 基于vue的上传组件
 
+## Install
+```
+npm install vue-upload
+```
+
+## Use
+```
+import VueUpload from 'vue-upload'
+import 'vue-upload/dist/vue-upload.css'
+Vue.use(VueUpload)
+```
+
+## Develop
+```
+npm install
+npm run serve
+```
+
 ## 功能
 - 单文件/多文件选择
 - 大文件分片上传-合并校验
