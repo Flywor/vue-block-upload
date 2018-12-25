@@ -1,6 +1,9 @@
 # vue-block-upload
 基于vue的上传组件
 
+###
+![example](https://github.com/Flywor/vue-block-upload/blob/master/ex/ex0.gif)
+
 ## Install
 ```
 npm install vue-block-upload
