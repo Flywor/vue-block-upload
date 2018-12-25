@@ -1,16 +1,16 @@
 {
-  "name": "vue-upload",
+  "name": "vue-block-upload",
   "version": "0.0.1",
   "private": false,
   "description": "A simple vue upload component based on Vue2.x",
-  "main": "dist/vue-upload.common.js",
+  "main": "dist/vue-block-upload.common.js",
   "author": "flywor<244406664@qq.com>",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "package": "vue-cli-service build --target lib --name vue-upload --dest dist ./src/components/vue-upload/index.js"
+    "package": "vue-cli-service build --target lib --name vue-block-upload --dest dist ./src/components/vue-upload/index.js"
   },
   "dependencies": {
     "axios": "^0.18.0"

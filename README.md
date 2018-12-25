@@ -3,14 +3,14 @@
 
 ## Install
 ```
-npm install vue-upload
+npm install vue-block-upload
 ```
 
 ## Use
 ```
-import VueUpload from 'vue-upload'
-import 'vue-upload/dist/vue-upload.css'
-Vue.use(VueUpload)
+import VueBlockUpload from 'vue-block-upload'
+import 'vue-block-upload/dist/vue-block-upload.css'
+Vue.use(VueBlockUpload)
 ```
 
 ## Develop

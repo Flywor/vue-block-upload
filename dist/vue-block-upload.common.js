@@ -5199,4 +5199,4 @@ module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u20
 /***/ })
 
 /******/ });
-//# sourceMappingURL=vue-upload.common.js.map
+//# sourceMappingURL=vue-block-upload.common.js.map
