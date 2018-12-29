@@ -34,6 +34,7 @@ npm run serve
 - 开始上传slot
 - doUpload手动触发上传
 - autoUpload
+- 暂停上传
 
 ## 依赖
 - vue 2.0+
