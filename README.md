@@ -29,10 +29,6 @@ npm run serve
 - 图片预览 `blob`
 
 ## 未完成
-- 上传生命周期钩子
-- 文件列表slot
-- 开始上传slot
-- doUpload手动触发上传
 - autoUpload
 - 暂停上传
 
@@ -40,8 +36,17 @@ npm run serve
 - vue 2.0+
 - axios 0.18+
 
-## slot
-- btn // 自定义上传按钮
+## 插槽slot
+- `slot="select-btn"` 选择文件按钮
+
+- `slot="file-list"  slot-scope="{ list, remove }"` 文件列表 scope: list 文件列表，包含了状态、进度等拓展信息， remove 删除方法，需传入当前文件对象和index
+
+- `slot="upload-btn" slot-scope="{ handlerStartUpload }"` 上传按钮  handlerStartUpload： 开始上传方法
+
+## 事件event
+- `@on-file-change(fileList)` 选择文件发生变化时调用
+- `@on-success` 上传成功调用
+- `@on-error(Error)` 上传失败调用
 
 ## 参数
 ```

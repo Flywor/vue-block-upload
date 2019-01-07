@@ -4,44 +4,49 @@
       <input type="file" :accept="accept" @change="handlerFileChange" :multiple="multiple && 'multiple'"/>
       <slot name="select-btn">
         <div class="btn">
-          <button>选择文件</button>
+          <button class="select-btn">选择文件</button>
         </div>
       </slot>
     </div>
-    <ul class="upload-list">
-      <li
-        v-for="(file, index) in fileList"
-        :key="file.name"
-      >
-        <img :src="file.preview" v-if="file.preview"/>
-        <label>
-          ({{getSize(file.size)}})
-          {{file.name}}
-        </label>
-        <span
-          @click="handlerRemoveFile(file, index)"
-          :class="{
-            error: (file.status === UPLOAD_FAIL || !!file.msg),
-            success: file.status === UPLOAD_SUCCESS
-          }"
+    <slot name="file-list" :list="fileList" :remove="handlerRemoveFile">
+      <ul class="upload-list">
+        <li
+          v-for="(file, index) in fileList"
+          :key="file.name"
         >
-          {{file.msg || (file.per? `${file.per}%`: '')}}
-        </span>
-        <i
-          :style="{ width: `${file.per || 0}%` }"
-          :class="{
-            error: file.status === UPLOAD_FAIL,
-            success: file.status === UPLOAD_SUCCESS
-          }"
-        />
-      </li>
-    </ul>
-    <button
-      v-if="fileList.some(f => [READY_UPLOAD, UPLOAD_FAIL].includes(f.status))"
-      @click="handlerUploading"
-    >
-      开始上传
-    </button>
+          <img :src="file.preview" v-if="file.preview"/>
+          <label>
+            ({{getSize(file.size)}})
+            {{file.name}}
+          </label>
+          <span
+            @click="handlerRemoveFile(file, index)"
+            :class="{
+              error: (file.status === UPLOAD_FAIL || !!file.msg),
+              success: file.status === UPLOAD_SUCCESS
+            }"
+          >
+            {{file.msg || (file.per? `${file.per}%`: '')}}
+          </span>
+          <i
+            :style="{ width: `${file.per || 0}%` }"
+            :class="{
+              error: file.status === UPLOAD_FAIL,
+              success: file.status === UPLOAD_SUCCESS
+            }"
+          />
+        </li>
+      </ul>
+    </slot>
+    <slot name="upload-btn" :handlerStartUpload="handlerUploading">
+      <button
+        class="upload-btn"
+        v-if="fileList.some(f => [READY_UPLOAD, UPLOAD_FAIL].includes(f.status))"
+        @click="handlerUploading"
+      >
+        开始上传
+      </button>
+    </slot>
   </div>
 </template>
 <script>
@@ -84,10 +89,12 @@ export default {
       type: Number,
       default: 50 * 1024 * 1024
     },
+    // 提交的文件地址
     postUrl: {
       type: String,
       default: 'http://localhost:8888'
     },
+    // 验证合并文件块地址
     validateUrl: {
       type: String,
       default: 'http://localhost:8888/validateFile'
@@ -104,11 +111,11 @@ export default {
   methods: {
     handlerFileChange ({ target: { files } }) {
       const { fileList, maxSize, getImgBlob } = this
-      console.log(files)
       Array.prototype.map.call(files, file => {
         if (!fileList.some(f => f.name === file.name)) {
           file.preview = getImgBlob(file)
           file.status = READY_UPLOAD
+          file.per = 0
           if (file.size > maxSize) {
             file.status = VALIDATE_FAIL
             file.msg = `大于${this.getSize(maxSize)}`
@@ -116,6 +123,7 @@ export default {
           fileList.push(file)
         }
       })
+      this.$emit('on-file-change', fileList.slice())
     },
     // 从数组读取未上传和失败文件进行上传
     handlerUploading () {
@@ -138,12 +146,14 @@ export default {
       try {
         await this.postFile({ file, fileName: file.name })
         setFileData(file.name, 'status', UPLOAD_SUCCESS)
+        this.$emit('on-success')
       } catch (e) {
         setFileData(file.name, {
           per: 0,
           msg: e,
           status: UPLOAD_FAIL
         })
+        this.$emit('on-error', e)
       }
     },
     // 大文件分块上传
@@ -181,12 +191,14 @@ export default {
           per: 100,
           status: UPLOAD_SUCCESS
         })
+        this.$emit('on-success')
       } catch (e) {
         setFileData(file.name, {
           per: 0,
           msg: e,
           status: UPLOAD_FAIL
         })
+        this.$emit('on-error', e)
       }
     },
     // 格式化文件大小显示文字
@@ -366,7 +378,7 @@ export default {
       }
     }
   }
-  button{
+  .upload-btn,.select-btn{
     background: #2D8cF0;
     width: 100%;
     padding: 5px;
