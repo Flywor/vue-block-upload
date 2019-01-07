@@ -104,6 +104,7 @@ export default {
   methods: {
     handlerFileChange ({ target: { files } }) {
       const { fileList, maxSize, getImgBlob } = this
+      console.log(files)
       Array.prototype.map.call(files, file => {
         if (!fileList.some(f => f.name === file.name)) {
           file.preview = getImgBlob(file)
@@ -254,7 +255,8 @@ export default {
       return axios.post(this.validateUrl, file).then(rs => rs.data)
     },
     getImgBlob (file) {
-      return /\w(\.gif|\.jpeg|\.png|\.jpg|\.bmp)/i.test(file.name) ? window.URL.createObjectURL(file) : null
+      const flag = /\S(\.gif|\.jpeg|\.png|\.jpg|\.bmp)/i.test(file.name)
+      return flag ? window.URL.createObjectURL(file) : null
     },
     setFileData (fileName, key, value) {
       const index = this.fileList.findIndex(f => f.name === fileName)
@@ -280,11 +282,11 @@ export default {
     position: relative;
     display: inline-block;
     input[type="file"]{
-      width: 100%;
+      width: 200%;
       height: 100%;
       position: absolute;
       z-index: 1;
-      left: 0;
+      left: -100%;
       top: 0;
       opacity: 0;
       cursor: pointer;

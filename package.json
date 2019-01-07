@@ -1,6 +1,6 @@
 {
   "name": "vue-block-upload",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "description": "A simple vue upload component based on Vue2.x",
   "main": "dist/vue-block-upload.common.js",
